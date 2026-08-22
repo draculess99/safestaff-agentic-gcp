@@ -57,7 +57,7 @@ async def test_approved_recommendation_is_committed(app_instance):
             
         # Verify commit_plan was called and workflow succeeded
         mock_commit.assert_called_once()
-        assert "Successfully committed plan" in resume_events[-1].output
+        assert "successfully committed to the local mock audit" in resume_events[-1].output
 
 @pytest.mark.asyncio
 async def test_rejected_recommendation_is_not_committed(app_instance):
@@ -98,7 +98,7 @@ async def test_rejected_recommendation_is_not_committed(app_instance):
         # Verify commit_plan was NOT called, but record_audit was
         mock_commit.assert_not_called()
         mock_audit.assert_called_once()
-        assert "was rejected. No changes committed" in resume_events[-1].output
+        assert "No staffing changes were committed" in resume_events[-1].output
 
 @pytest.mark.asyncio
 async def test_firestore_failure_leaves_uncommitted(app_instance):

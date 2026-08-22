@@ -1,5 +1,6 @@
 import streamlit as st
 import asyncio
+import os
 from google.adk.runners import InMemoryRunner
 from google.genai import types
 
@@ -12,6 +13,9 @@ st.set_page_config(page_title="SafeStaff Agentic", layout="wide")
 st.title("SafeStaff Agentic GCP")
 st.markdown("Healthcare staffing forecasting and approval workflow.")
 
+if os.getenv("MOCK_MODE", "").lower() == "true":
+    st.success("SAFE MOCK MODE — No Vertex AI or Firestore calls")
+
 # Initialize session state for runner and session ID
 if 'runner' not in st.session_state:
     st.session_state.runner = InMemoryRunner(app=adk_app)
@@ -23,6 +27,8 @@ if 'current_plan' not in st.session_state:
     st.session_state.current_plan = None
 if 'interrupt_id' not in st.session_state:
     st.session_state.interrupt_id = None
+if 'last_result' not in st.session_state:
+    st.session_state.last_result = None
 
 async def run_workflow(message: str = None, interrupt_id: str = None, resume_input: str = None):
     kwargs = {
@@ -66,13 +72,14 @@ async def run_workflow(message: str = None, interrupt_id: str = None, resume_inp
     run_kwargs = {k: v for k, v in kwargs.items() if k in ["user_id", "session_id", "new_message"]}
 
     async for event in st.session_state.runner.run_async(**run_kwargs):
-        if hasattr(event, "interrupt_id"):
-            st.session_state.interrupt_id = event.interrupt_id
+        if getattr(event, "interrupt_id", None) or (getattr(event, "long_running_tool_ids", None) and "approval" in event.long_running_tool_ids):
+            st.session_state.interrupt_id = getattr(event, "interrupt_id", "approval")
             st.session_state.workflow_state = "awaiting_approval"
             is_paused = True
-            st.warning(event.message)
-            break
-        elif event.output is not None:
+            if getattr(event, "message", None):
+                st.warning(event.message)
+            
+        if getattr(event, "output", None) is not None:
             # Output from final nodes or LLM
             if hasattr(event.output, "model_dump"):
                 plan_dict = event.output.model_dump()
@@ -82,11 +89,11 @@ async def run_workflow(message: str = None, interrupt_id: str = None, resume_inp
                 st.session_state.current_plan = event.output
             elif isinstance(event.output, str):
                 result_text = event.output
+                st.session_state.last_result = result_text
                 
     if not is_paused:
         st.session_state.workflow_state = "completed"
-        if result_text:
-            st.success(result_text)
+        # We handle displaying the success message in the UI layout below
 
 # UI Layout
 col1, col2 = st.columns(2)
@@ -104,7 +111,10 @@ with col2:
     st.subheader("Human-in-the-Loop Approval")
     
     if st.session_state.workflow_state == "awaiting_approval":
-        st.info("A plan requires your review before committing to Firestore.")
+        if os.getenv("MOCK_MODE", "").lower() == "true":
+            st.info("A plan requires your review before recording in the local mock audit.")
+        else:
+            st.info("A plan requires your review before committing to Firestore.")
         if st.session_state.current_plan:
             st.json(st.session_state.current_plan)
         
@@ -121,5 +131,7 @@ with col2:
                     st.rerun()
     elif st.session_state.workflow_state == "completed":
         st.success("Workflow finished.")
+        if st.session_state.last_result:
+            st.info(st.session_state.last_result)
     else:
         st.write("No pending approvals.")
