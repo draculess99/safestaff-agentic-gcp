@@ -40,7 +40,7 @@ def prepare_data(ctx: Context, node_input: types.Content) -> str:
 
 _real_generator = LlmAgent(
     name="_real_generator",
-    model=Gemini(model=os.getenv("GEMINI_MODEL", "gemini-3.5-flash")),
+    model=Gemini(model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash")),
     instruction="""
     You are an expert healthcare staffing planner. Based on the forecasted demand and healthcare rules provided,
     generate a compliant and optimal staffing plan.

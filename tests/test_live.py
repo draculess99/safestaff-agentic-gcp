@@ -14,7 +14,7 @@ def app_instance():
     # Ensure Vertex AI configuration is respected (requires ADC credentials)
     os.environ["GOOGLE_GENAI_USE_VERTEXAI"] = "true"
     if "GEMINI_MODEL" not in os.environ:
-        os.environ["GEMINI_MODEL"] = "gemini-3.5-flash"
+        os.environ["GEMINI_MODEL"] = "gemini-2.5-flash"
     
     return App(
         name="test_live_app",
