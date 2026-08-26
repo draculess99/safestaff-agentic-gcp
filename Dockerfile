@@ -11,4 +11,4 @@ EXPOSE 8501
 EXPOSE 8000
 
 # By default, run the Streamlit UI. In Cloud Run, we might want to deploy ADK and UI separately.
-CMD ["streamlit", "run", "ui/app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+CMD ["streamlit", "run", "ui/streamlit_app.py", "--server.port=8501", "--server.address=0.0.0.0"]
