@@ -1,6 +1,8 @@
 import os
 import re
+import math
 from dotenv import load_dotenv
+import json
 
 # Ensure .env is loaded before any Gemini model or Google configuration is constructed.
 load_dotenv()
@@ -17,9 +19,14 @@ from google.adk.models import Gemini
 # 1. Define schemas
 class StaffingPlan(BaseModel):
     shift_date: str
+    predicted_demand: int
+    direct_care_staff: int
+    registered_nurses: int
+    supervisors_required: int
     recommended_staff: int
     rationale: str
     compliance_notes: list[str]
+    validation_status: str
 
 # 2. Intake node to prepare data and state
 @node
@@ -79,8 +86,48 @@ def _sanitize_exception_chain(e: Exception) -> list[dict]:
             
     return chain
 
+def _coerce_staffing_plan(raw: object) -> StaffingPlan:
+    """Convert ADK/Gemini JSON output to the application schema."""
+    if isinstance(raw, StaffingPlan):
+        return raw
+    if isinstance(raw, str):
+        text = raw.strip()
+        if text.startswith("```"):
+            text = re.sub(r"^```(?:json)?\s*|\s*```$", "", text).strip()
+        return StaffingPlan.model_validate_json(text)
+    if isinstance(raw, dict):
+        return StaffingPlan.model_validate(raw)
+    if hasattr(raw, "model_dump"):
+        return StaffingPlan.model_validate(raw.model_dump())
+    raise TypeError(f"Unsupported Gemini output type: {type(raw).__name__}")
+
+
+def _validate_and_correct_plan(plan: StaffingPlan, predicted_demand: int) -> StaffingPlan:
+    plan.predicted_demand = predicted_demand
+    plan.direct_care_staff = predicted_demand
+    plan.supervisors_required = math.ceil(predicted_demand / 5)
+    plan.recommended_staff = plan.direct_care_staff + plan.supervisors_required
+    plan.registered_nurses = max(10, getattr(plan, 'registered_nurses', 0))
+    
+    plan.compliance_notes = [
+        f"Required direct care staff based on demand: {plan.direct_care_staff}",
+        f"Maintained 1:5 supervisor ratio: {plan.supervisors_required} supervisors",
+        f"Enforced minimum 10 RNs: {plan.registered_nurses} RNs assigned"
+    ]
+    plan.validation_status = "Corrected by deterministic rules"
+    
+    plan.rationale = (
+        f"Safety validation set {plan.direct_care_staff} direct-care staff for "
+        f"forecast demand {predicted_demand}, plus {plan.supervisors_required} "
+        f"supervisors at a 1:5 ratio and at least {plan.registered_nurses} RNs. "
+        f"Total recommended staff: {plan.recommended_staff}."
+    )
+    return plan
+
 @node(name="generator", rerun_on_resume=True)
 async def plan_generator(ctx: Context, node_input: str):
+    predicted_demand = ctx.state.get("forecast", {}).get("predicted_demand", 0)
+    
     if os.getenv("MOCK_MODE", "").lower() == "true":
         input_scenario = ctx.state.get("input_scenario", "")
         match = re.search(r'\d{4}-\d{2}-\d{2}', input_scenario)
@@ -89,15 +136,23 @@ async def plan_generator(ctx: Context, node_input: str):
         # Mock mode deterministic plan
         plan = StaffingPlan(
             shift_date=shift_date,
-            recommended_staff=10,
+            predicted_demand=predicted_demand,
+            direct_care_staff=0,
+            registered_nurses=0,
+            supervisors_required=0,
+            recommended_staff=0,
             rationale="Generated deterministically in mock mode.",
-            compliance_notes=["Compliant with mock rules"]
+            compliance_notes=[],
+            validation_status=""
         )
+        plan = _validate_and_correct_plan(plan, predicted_demand)
         yield Event(output=plan, route="success")
         return
 
     try:
         result = await ctx.run_node(_real_generator, node_input=node_input)
+        result = _coerce_staffing_plan(result)
+        result = _validate_and_correct_plan(result, predicted_demand)
         yield Event(output=result, route="success")
     except Exception as e:
         if os.getenv("DIAGNOSTIC_MODE", "").lower() == "true":
