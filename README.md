@@ -8,6 +8,8 @@ This system is designed as decision support, not autonomous clinical staffing. D
 
 ## Architecture and Workflow
 
+![SafeStaff Agentic GCP Architecture](docs/architecture.svg)
+
 The system follows a rigorous, governed workflow:
 1. **Intake**: A shift date or scenario is provided, leading to a demand forecast.
 2. **Generation**: In live mode, Google ADK and Vertex AI invoke the Gemini model to propose a schema-valid `StaffingPlan`.

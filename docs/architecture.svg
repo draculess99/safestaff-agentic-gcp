@@ -1,0 +1,221 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1150 720" width="100%" height="100%" style="background-color: #0f172a; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="publicGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <linearGradient id="liveGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <linearGradient id="mockBadge" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+    <linearGradient id="vertexBadge" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#8b5cf6" />
+      <stop offset="100%" stop-color="#6366f1" />
+    </linearGradient>
+    <linearGradient id="cloudRunBadge" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#2563eb" />
+    </linearGradient>
+    <linearGradient id="safetyBadge" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+
+    <!-- Filters & Shadows -->
+    <filter id="dropShadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.4"/>
+    </filter>
+
+    <!-- Markers -->
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#38bdf8" />
+    </marker>
+    <marker id="arrow-amber" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#fbbf24" />
+    </marker>
+    <marker id="arrow-purple" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#a78bfa" />
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#34d399" />
+    </marker>
+  </defs>
+
+  <!-- Canvas Header -->
+  <g transform="translate(50, 40)">
+    <text x="0" y="0" fill="#f8fafc" font-size="24" font-weight="700" letter-spacing="0.5">SafeStaff Agentic GCP &mdash; Architecture &amp; Dual-Track Deployment</text>
+    <text x="0" y="24" fill="#94a3b8" font-size="14">Human-Governed Healthcare Staffing Decision Support with Deterministic Safety Boundaries</text>
+  </g>
+
+  <!-- ==================== TRACK 1: PUBLIC SAFE MOCK PATH ==================== -->
+  <g transform="translate(50, 95)">
+    <!-- Container Box -->
+    <rect x="0" y="0" width="1050" height="200" rx="12" fill="url(#publicGrad)" stroke="#334155" stroke-width="1.5" filter="url(#dropShadow)"/>
+    
+    <!-- Track Title -->
+    <rect x="20" y="16" width="220" height="26" rx="6" fill="#f59e0b" fill-opacity="0.15" stroke="#f59e0b" stroke-width="1"/>
+    <text x="30" y="34" fill="#fbbf24" font-size="12" font-weight="700" letter-spacing="0.5">&#x1F512; PUBLIC EVALUATION PATH (SAFE MOCK)</text>
+
+    <!-- Step 1.1: Public Evaluator Browser -->
+    <g transform="translate(30, 60)">
+      <rect x="0" y="0" width="200" height="110" rx="8" fill="#1e293b" stroke="#475569" stroke-width="1.2"/>
+      <rect x="0" y="0" width="200" height="30" rx="8" fill="#334155"/>
+      <circle cx="15" cy="15" r="4" fill="#ef4444"/>
+      <circle cx="28" cy="15" r="4" fill="#f59e0b"/>
+      <circle cx="41" cy="15" r="4" fill="#10b981"/>
+      <text x="58" y="20" fill="#cbd5e1" font-size="11" font-weight="600">Public Web Browser</text>
+      
+      <text x="15" y="56" fill="#f8fafc" font-size="13" font-weight="600">Public Evaluator</text>
+      <text x="15" y="75" fill="#94a3b8" font-size="11">HTTPS Request to:</text>
+      <text x="15" y="93" fill="#38bdf8" font-size="11" font-family="monospace">https://*.run.app</text>
+    </g>
+
+    <!-- Arrow 1: Browser to Public Cloud Run -->
+    <path d="M 230 115 L 290 115" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow-blue)"/>
+    <text x="260" y="105" fill="#94a3b8" font-size="10" text-anchor="middle">HTTPS</text>
+
+    <!-- Step 1.2: Public Cloud Run Service -->
+    <g transform="translate(300, 60)">
+      <rect x="0" y="0" width="240" height="110" rx="8" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+      <rect x="12" y="12" width="130" height="20" rx="4" fill="url(#cloudRunBadge)"/>
+      <text x="20" y="26" fill="#ffffff" font-size="10" font-weight="700">Cloud Run (us-central1)</text>
+      
+      <text x="12" y="54" fill="#f8fafc" font-size="14" font-weight="700">safestaff-agentic</text>
+      <text x="12" y="74" fill="#cbd5e1" font-size="11">Entry: <tspan fill="#38bdf8" font-family="monospace">ui/streamlit_app.py</tspan></text>
+      <text x="12" y="94" fill="#fbbf24" font-size="11" font-weight="600">ENV: MOCK_MODE=true</text>
+    </g>
+
+    <!-- Arrow 2: Cloud Run to Deterministic Mock Agent -->
+    <path d="M 540 115 L 600 115" stroke="#fbbf24" stroke-width="2" marker-end="url(#arrow-amber)"/>
+    <text x="570" y="105" fill="#fbbf24" font-size="10" text-anchor="middle">Mock Flow</text>
+
+    <!-- Step 1.3: Safe Mock Execution & HITL -->
+    <g transform="translate(610, 60)">
+      <rect x="0" y="0" width="210" height="110" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+      <rect x="12" y="12" width="110" height="20" rx="4" fill="url(#mockBadge)"/>
+      <text x="20" y="26" fill="#ffffff" font-size="10" font-weight="700">Safe Mock Engine</text>
+      
+      <text x="12" y="54" fill="#f8fafc" font-size="12" font-weight="600">Deterministic Staffing</text>
+      <text x="12" y="72" fill="#94a3b8" font-size="11">&bull; Rigid Safety Calculations</text>
+      <text x="12" y="90" fill="#94a3b8" font-size="11">&bull; Human Review / Approval</text>
+    </g>
+
+    <!-- Arrow 3: Mock to Local Audit -->
+    <path d="M 820 115 L 870 115" stroke="#fbbf24" stroke-width="2" marker-end="url(#arrow-amber)"/>
+
+    <!-- Step 1.4: Local Mock Audit -->
+    <g transform="translate(880, 60)">
+      <rect x="0" y="0" width="140" height="110" rx="8" fill="#1e293b" stroke="#64748b" stroke-width="1.2"/>
+      <text x="15" y="32" fill="#f8fafc" font-size="12" font-weight="700">Local Mock Audit</text>
+      <text x="15" y="52" fill="#94a3b8" font-size="10">In-Memory / Session</text>
+      <line x1="15" y1="62" x2="125" y2="62" stroke="#334155" stroke-width="1"/>
+      <text x="15" y="78" fill="#ef4444" font-size="9" font-weight="700">NO Vertex AI Calls</text>
+      <text x="15" y="94" fill="#ef4444" font-size="9" font-weight="700">NO Firestore Writes</text>
+    </g>
+  </g>
+
+  <!-- ==================== TRACK 2: AUTHENTICATED PRIVATE LIVE VERTEX PATH ==================== -->
+  <g transform="translate(50, 315)">
+    <!-- Container Box -->
+    <rect x="0" y="0" width="1050" height="360" rx="12" fill="url(#liveGrad)" stroke="#334155" stroke-width="1.5" filter="url(#dropShadow)"/>
+    
+    <!-- Track Title -->
+    <rect x="20" y="16" width="280" height="26" rx="6" fill="#8b5cf6" fill-opacity="0.15" stroke="#8b5cf6" stroke-width="1"/>
+    <text x="30" y="34" fill="#c084fc" font-size="12" font-weight="700" letter-spacing="0.5">&#x1F6E1; AUTHENTICATED PRIVATE LIVE PATH (VERTEX AI)</text>
+
+    <!-- Step 2.1: Developer Browser & gcloud proxy -->
+    <g transform="translate(30, 60)">
+      <rect x="0" y="0" width="170" height="125" rx="8" fill="#1e293b" stroke="#475569" stroke-width="1.2"/>
+      <rect x="0" y="0" width="170" height="26" rx="8" fill="#334155"/>
+      <text x="12" y="18" fill="#cbd5e1" font-size="10" font-weight="600">Authorized Developer</text>
+      
+      <text x="12" y="48" fill="#f8fafc" font-size="12" font-weight="600">Local Workstation</text>
+      <rect x="10" y="58" width="150" height="32" rx="4" fill="#0f172a" stroke="#334155"/>
+      <text x="15" y="72" fill="#a78bfa" font-size="9" font-family="monospace">gcloud run services</text>
+      <text x="15" y="84" fill="#a78bfa" font-size="9" font-family="monospace">proxy (:8502)</text>
+      <text x="12" y="108" fill="#34d399" font-size="10" font-weight="600">&#x2714; IAM Authenticated</text>
+    </g>
+
+    <!-- Arrow 1: Local Proxy to Private Cloud Run -->
+    <path d="M 200 120 L 235 120" stroke="#a78bfa" stroke-width="2" marker-end="url(#arrow-purple)"/>
+
+    <!-- Step 2.2: Private Cloud Run Service -->
+    <g transform="translate(245, 60)">
+      <rect x="0" y="0" width="180" height="125" rx="8" fill="#1e293b" stroke="#8b5cf6" stroke-width="1.5"/>
+      <rect x="10" y="10" width="130" height="18" rx="4" fill="url(#cloudRunBadge)"/>
+      <text x="16" y="23" fill="#ffffff" font-size="9" font-weight="700">Cloud Run (us-central1)</text>
+      
+      <text x="10" y="48" fill="#f8fafc" font-size="12" font-weight="700">safestaff-agentic-live</text>
+      <text x="10" y="66" fill="#cbd5e1" font-size="10">Private / No Public Access</text>
+      <text x="10" y="82" fill="#a78bfa" font-size="10" font-weight="600">MOCK_MODE=false</text>
+      <text x="10" y="98" fill="#94a3b8" font-size="9">Google ADK LlmAgent</text>
+      <text x="10" y="112" fill="#94a3b8" font-size="9">Default Compute SA IAM</text>
+    </g>
+
+    <!-- Arrow 2: ADK to Vertex AI -->
+    <path d="M 425 120 L 465 120" stroke="#a78bfa" stroke-width="2" marker-end="url(#arrow-purple)"/>
+    <text x="445" y="110" fill="#c084fc" font-size="9" text-anchor="middle">ADK Call</text>
+
+    <!-- Step 2.3: Vertex AI Gemini 3.5 Flash -->
+    <g transform="translate(475, 60)">
+      <rect x="0" y="0" width="185" height="125" rx="8" fill="#1e293b" stroke="#a855f7" stroke-width="1.5"/>
+      <rect x="10" y="10" width="160" height="18" rx="4" fill="url(#vertexBadge)"/>
+      <text x="16" y="23" fill="#ffffff" font-size="9" font-weight="700">Vertex AI &mdash; us multi-region</text>
+      
+      <text x="10" y="48" fill="#f8fafc" font-size="13" font-weight="700">Gemini 3.5 Flash</text>
+      <text x="10" y="66" fill="#94a3b8" font-size="10">Input: Context &amp; Demand</text>
+      <text x="10" y="82" fill="#c084fc" font-size="10" font-weight="600">GOOGLE_CLOUD_LOCATION=us</text>
+      <text x="10" y="98" fill="#94a3b8" font-size="9">Generates Candidate Plan</text>
+      <text x="10" y="112" fill="#38bdf8" font-size="9">Output: Raw JSON Object</text>
+    </g>
+
+    <!-- Arrow 3: Gemini to Validation (Down and Right) -->
+    <path d="M 567 185 L 567 220 L 685 220" stroke="#34d399" stroke-width="2" fill="none" marker-end="url(#arrow-green)"/>
+    <text x="610" y="212" fill="#34d399" font-size="10">Candidate Output</text>
+
+    <!-- Step 2.4: Deterministic Safety Validation -->
+    <g transform="translate(695, 145)">
+      <rect x="0" y="0" width="325" height="110" rx="8" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+      <rect x="12" y="10" width="190" height="18" rx="4" fill="url(#safetyBadge)"/>
+      <text x="18" y="23" fill="#ffffff" font-size="9" font-weight="700">Deterministic Safety Layer</text>
+      
+      <text x="12" y="46" fill="#f8fafc" font-size="11" font-weight="700">Pydantic Validation &amp; Safety Rule Interceptor</text>
+      <text x="12" y="64" fill="#94a3b8" font-size="10">&bull; Direct-Care = Forecast Demand (e.g. 42)</text>
+      <text x="12" y="78" fill="#94a3b8" font-size="10">&bull; Supervisors = ceil(Demand / 5) (e.g. 9)</text>
+      <text x="12" y="92" fill="#94a3b8" font-size="10">&bull; Minimum 10 Registered Nurses Enforced</text>
+      <text x="12" y="104" fill="#34d399" font-size="9" font-weight="600">&bull; Total Staffing = Direct-Care + Supervisors (51)</text>
+    </g>
+
+    <!-- Arrow 4: Safety to HITL Approval -->
+    <path d="M 857 255 L 857 275" stroke="#34d399" stroke-width="2" marker-end="url(#arrow-green)"/>
+
+    <!-- Step 2.5: Human-in-the-Loop Approval & Commit -->
+    <g transform="translate(695, 280)">
+      <rect x="0" y="0" width="325" height="65" rx="8" fill="#0f172a" stroke="#34d399" stroke-width="1.2"/>
+      <circle cx="25" cy="32" r="12" fill="#10b981" fill-opacity="0.2" stroke="#10b981" stroke-width="1.5"/>
+      <text x="21" y="37" fill="#34d399" font-size="13" font-weight="700">&#x2713;</text>
+      
+      <text x="48" y="26" fill="#f8fafc" font-size="11" font-weight="700">Explicit Human Approval Barrier (HITL)</text>
+      <text x="48" y="42" fill="#94a3b8" font-size="10">Plan pauses &amp; awaits user decision before commit.</text>
+      <text x="48" y="56" fill="#34d399" font-size="10" font-weight="600">On Approval &rarr; Committed to Firestore Audit</text>
+    </g>
+
+    <!-- Firestore Database Icon & Box -->
+    <g transform="translate(500, 260)">
+      <rect x="0" y="0" width="150" height="85" rx="8" fill="#1e293b" stroke="#38bdf8" stroke-width="1.2"/>
+      <text x="12" y="24" fill="#38bdf8" font-size="11" font-weight="700">&#x1F5C4; Google Cloud</text>
+      <text x="12" y="42" fill="#f8fafc" font-size="12" font-weight="700">Firestore</text>
+      <text x="12" y="58" fill="#94a3b8" font-size="9">Persistent Audit Record</text>
+      <text x="12" y="72" fill="#94a3b8" font-size="9">Immutable Session Log</text>
+    </g>
+
+    <!-- Arrow 5: HITL to Firestore -->
+    <path d="M 695 315 L 660 315" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow-blue)"/>
+    <text x="677" y="305" fill="#38bdf8" font-size="9" text-anchor="middle">Write</text>
+  </g>
+</svg>
