@@ -66,9 +66,9 @@ flowchart TD
 Ensures core workflow orchestration and UI functions perfectly without hitting live endpoints.
 ```powershell
 # Set MOCK_MODE=true in .env
-$env:PYTHONPATH="."
+$env:PYTHONPATH = (Get-Location).Path
 streamlit run ui/streamlit_app.py
-$env:PYTHONPATH="."
+$env:PYTHONPATH = (Get-Location).Path
 python -m pytest tests/
 ```
 
@@ -78,7 +78,7 @@ Proves integration with live Vertex AI endpoints before deployment. This control
 $env:MOCK_MODE="false"
 $env:RUN_LIVE_TESTS="true"
 $env:DIAGNOSTIC_MODE="true"
-$env:PYTHONPATH="."
+$env:PYTHONPATH = (Get-Location).Path
 python -m pytest -q .\tests\test_live.py -s
 ```
 
@@ -105,14 +105,14 @@ When containerizing Streamlit with Google ADK, two critical configuration elemen
 For public demonstrations, the deployment must strictly execute in mock mode to prevent unauthorized inference costs or database mutations.
 
 Deploy directly from source, enforcing safety rules:
-```bash
-gcloud run deploy safestaff-agentic \
-  --source . \
-  --port 8501 \
-  --allow-unauthenticated \
-  --set-env-vars="MOCK_MODE=true,RUN_LIVE_TESTS=false" \
-  --min-instances=0 \
-  --max-instances=1 \
+```powershell
+gcloud run deploy safestaff-agentic `
+  --source . `
+  --port 8501 `
+  --allow-unauthenticated `
+  --set-env-vars="MOCK_MODE=true,RUN_LIVE_TESTS=false" `
+  --min-instances=0 `
+  --max-instances=1 `
   --region=us-central1
 ```
 
@@ -186,14 +186,14 @@ CMD ["streamlit", "run", "ui/your_app.py", "--server.port=8501", "--server.addre
 Open your terminal in the root of your project directory and run this exact command. 
 *Note: Change `safestaff-agentic` to whatever you want to name your app.*
 
-```bash
-gcloud run deploy safestaff-agentic \
-  --source . \
-  --port 8501 \
-  --allow-unauthenticated \
-  --set-env-vars="MOCK_MODE=true,RUN_LIVE_TESTS=false" \
-  --min-instances=0 \
-  --max-instances=1 \
+```powershell
+gcloud run deploy safestaff-agentic `
+  --source . `
+  --port 8501 `
+  --allow-unauthenticated `
+  --set-env-vars="MOCK_MODE=true,RUN_LIVE_TESTS=false" `
+  --min-instances=0 `
+  --max-instances=1 `
   --region=us-central1
 ```
 
