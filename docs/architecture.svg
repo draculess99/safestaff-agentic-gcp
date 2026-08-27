@@ -201,7 +201,7 @@
       
       <text x="48" y="26" fill="#f8fafc" font-size="11" font-weight="bold">Explicit Human Approval Barrier (HITL)</text>
       <text x="48" y="42" fill="#94a3b8" font-size="10">Plan pauses &amp; awaits user decision before commit.</text>
-      <text x="48" y="56" fill="#34d399" font-size="10" font-weight="bold">On Approval &rarr; Committed to Firestore Audit</text>
+      <text x="48" y="56" fill="#34d399" font-size="10" font-weight="bold">On Approval -> Committed to Firestore Audit</text>
     </g>
 
     <!-- Firestore Database Icon & Box -->
