@@ -124,7 +124,7 @@ After a successful deployment:
 2. Verify the application loads without a "Please wait" hanging state.
 3. Confirm the "SAFE MOCK MODE" indicator is visible in the UI.
 
-![Safe Mock Mode UI confirmation](docs/screenshots/runbook-04-safe-mock-mode.png)
+![Safe Mock Mode UI confirmation](screenshots/03-cloud-run-review.png.jpg)
 
 4. Execute the workflow to confirm mock outputs render seamlessly.
 
@@ -155,8 +155,6 @@ If you are a complete beginner trying to deploy a new AI Agent using Vertex AI t
 2. **Standardize Requirements**: Create a `requirements.txt` file at the root. If using Vertex AI, ensure `google-genai` and `google-adk` are listed.
 3. **Hide Secrets**: Create a `.env` file for local testing containing `GOOGLE_CLOUD_PROJECT` and `GEMINI_MODEL`. Make sure `.env` is listed in your `.gitignore` file. Create a `.env.example` file that shows the variable names without the real values.
 
-![Local .env file setup](docs/screenshots/runbook-02-env-setup.png)
-
 ### Phase 2: Create a Bulletproof Dockerfile
 In the root of your project, create a file literally named `Dockerfile` (no extension) with this exact template, modifying only the `CMD` line to point to your specific script:
 
@@ -177,9 +175,6 @@ CMD ["streamlit", "run", "ui/your_app.py", "--server.port=8501", "--server.addre
 1. Go to the [Google Cloud Console](https://console.cloud.google.com).
 2. Create a new Project and enable Billing.
 3. Search for "Vertex AI API", "Cloud Run API", and "Cloud Build API" in the top search bar and click **Enable** for each.
-
-![Enabling APIs in Google Cloud Console](docs/screenshots/runbook-01-enable-apis.png)
-
 4. Install the [Google Cloud SDK (gcloud)](https://cloud.google.com/sdk/docs/install) on your local computer.
 5. In your local terminal, run `gcloud auth login` and follow the browser prompts.
 6. In your local terminal, run `gcloud config set project YOUR_PROJECT_ID`.
@@ -204,4 +199,4 @@ If your app requires live Vertex AI access, Cloud Run will automatically use the
 ### Phase 5: Verification
 Wait for the command to finish. It will output a URL that looks like `https://my-new-agent-xyz.a.run.app`. Click it, and your app is live!
 
-![Cloud Run Deployment Success](docs/screenshots/runbook-03-cloud-run-success.png)
+![Cloud Run Deployment Success](screenshots/04-cloud-run-approved.png.jpg)
