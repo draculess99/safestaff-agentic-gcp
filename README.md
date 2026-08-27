@@ -50,7 +50,7 @@ The application supports two distinct operational modes across separate Cloud Ru
 
 The system is backed by a robust test suite: **12 local tests passed** flawlessly, and **one controlled live Vertex test passed** successfully. Our deterministic safety validation strictly enforced 42 direct-care staff, 9 supervisors, at least 10 RNs, and 51 total staff during live validation.
 
-### Local Mock Evidence
+### Local Workflow Evidence
 
 ![A generated staffing plan pauses for explicit human approval before Firestore](docs/screenshots/01-local-human-approval-pending.png.jpg)
 ![An approved plan completes and is committed to Firestore with an audit ID](docs/screenshots/02-local-human-decision-audit.png.jpg)
