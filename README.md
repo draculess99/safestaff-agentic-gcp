@@ -71,27 +71,39 @@ pip install -r requirements.txt
 ```
 
 ### Running Locally (Mock Mode)
-```bash
+```powershell
 # Ensure MOCK_MODE=true in .env
+$env:PYTHONPATH="."
 streamlit run ui/streamlit_app.py
 ```
 
 ### Running Tests
-```bash
+```powershell
 # Run the local mock test suite
+$env:PYTHONPATH="."
 python -m pytest tests/
 ```
 
 ### Controlled Live Test
-```bash
-# Ensure MOCK_MODE=false and RUN_LIVE_TESTS=true in .env
-python -m pytest tests/test_live.py -s
+```powershell
+$env:MOCK_MODE="false"
+$env:RUN_LIVE_TESTS="true"
+$env:DIAGNOSTIC_MODE="true"
+$env:PYTHONPATH="."
+python -m pytest -q .\tests\test_live.py -s
 ```
 
 ### Cloud Run Deployment
 Deploy the public mock version securely to Cloud Run:
 ```bash
-gcloud run deploy safestaff-agentic-demo --source . --port 8501 --allow-unauthenticated --set-env-vars="MOCK_MODE=true"
+gcloud run deploy safestaff-agentic \
+  --source . \
+  --port 8501 \
+  --allow-unauthenticated \
+  --set-env-vars="MOCK_MODE=true,RUN_LIVE_TESTS=false" \
+  --min-instances=0 \
+  --max-instances=1 \
+  --region=us-central1
 ```
 
 ## Reproducibility

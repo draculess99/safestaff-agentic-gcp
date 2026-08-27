@@ -64,17 +64,22 @@ flowchart TD
 
 ### Mock-Mode Local Testing
 Ensures core workflow orchestration and UI functions perfectly without hitting live endpoints.
-```bash
+```powershell
 # Set MOCK_MODE=true in .env
+$env:PYTHONPATH="."
 streamlit run ui/streamlit_app.py
+$env:PYTHONPATH="."
 python -m pytest tests/
 ```
 
 ### Controlled Live Vertex Testing
 Proves integration with live Vertex AI endpoints before deployment. This controlled test was successfully proven locally for the SafeStaff prototype.
-```bash
-# Set MOCK_MODE=false and RUN_LIVE_TESTS=true in .env
-python -m pytest tests/test_live.py -s
+```powershell
+$env:MOCK_MODE="false"
+$env:RUN_LIVE_TESTS="true"
+$env:DIAGNOSTIC_MODE="true"
+$env:PYTHONPATH="."
+python -m pytest -q .\tests\test_live.py -s
 ```
 
 ## Dockerfile Lessons Learned
@@ -101,11 +106,11 @@ For public demonstrations, the deployment must strictly execute in mock mode to 
 
 Deploy directly from source, enforcing safety rules:
 ```bash
-gcloud run deploy safestaff-agentic-demo \
+gcloud run deploy safestaff-agentic \
   --source . \
   --port 8501 \
   --allow-unauthenticated \
-  --set-env-vars="MOCK_MODE=true" \
+  --set-env-vars="MOCK_MODE=true,RUN_LIVE_TESTS=false" \
   --min-instances=0 \
   --max-instances=1 \
   --region=us-central1
@@ -179,13 +184,14 @@ CMD ["streamlit", "run", "ui/your_app.py", "--server.port=8501", "--server.addre
 
 ### Phase 4: Deploying to Cloud Run
 Open your terminal in the root of your project directory and run this exact command. 
-*Note: Change `my-new-agent` to whatever you want to name your app.*
+*Note: Change `safestaff-agentic` to whatever you want to name your app.*
 
 ```bash
-gcloud run deploy my-new-agent \
+gcloud run deploy safestaff-agentic \
   --source . \
   --port 8501 \
   --allow-unauthenticated \
+  --set-env-vars="MOCK_MODE=true,RUN_LIVE_TESTS=false" \
   --min-instances=0 \
   --max-instances=1 \
   --region=us-central1
