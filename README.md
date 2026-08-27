@@ -16,8 +16,13 @@ A modern, Google-native AI agent for healthcare staffing forecasting, built for 
 
 The live Vertex/Gemini test passed and produced a schema-valid StaffingPlan. Our deterministic safety validation successfully enforced 42 direct-care staff, 9 supervisors, at least 10 RNs, and 51 total staff.
 
-![A generated staffing plan pauses for explicit human approval before Firestore](docs/screenshots/01-human-approval-pending.png.jpg)
-![An approved plan completes and is committed to Firestore with an audit ID](docs/screenshots/02-human-decision-audit.png.jpg)
+![A generated staffing plan pauses for explicit human approval before Firestore](docs/screenshots/01-local-human-approval-pending.png.jpg)
+![An approved plan completes and is committed to Firestore with an audit ID](docs/screenshots/02-local-human-decision-audit.png.jpg)
+
+### Public Cloud Run deployment evidence
+
+![Public Cloud Run demo: deterministic plan awaits explicit human review.](docs/screenshots/03-cloud-run-review.png.jpg)
+![Public Cloud Run demo: approved plan completes and is recorded in the local mock audit.](docs/screenshots/04-cloud-run-approved.png.jpg)
 
 ## Getting Started
 
