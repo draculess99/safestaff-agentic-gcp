@@ -136,9 +136,54 @@ After a successful deployment:
 - [ ] Controlled Live Vertex integration confirmed locally.
 - [ ] Public Cloud Run deployment executed with bounded scaling limits and mock isolation.
 
-## Adapting this Runbook to Another Agent Project
-To reuse this runbook for a new Google ADK agent:
-1. Update the `CMD` file reference if your UI entry point differs from `ui/streamlit_app.py`.
-2. Adapt the environment variable schema and ensure custom `MOCK_MODE` implementations exist in your new node functions.
-3. Replace `safestaff-agentic-demo` in the `gcloud run deploy` command with your new project slug.
-4. If your new agent necessitates live public access, transition from `--allow-unauthenticated` to an explicit Identity-Aware Proxy (IAP) or IAM authenticated invocation model.
+## Adapting this Runbook to Another Agent Project (Novice Guide)
+
+If you are a complete beginner trying to deploy a new AI Agent using Vertex AI to Cloud Run, follow this exact step-by-step template:
+
+### Phase 1: Prepare Your Project Structure
+1. **Initialize Git**: Ensure your code is in a git repository.
+2. **Standardize Requirements**: Create a `requirements.txt` file at the root. If using Vertex AI, ensure `google-genai` and `google-adk` are listed.
+3. **Hide Secrets**: Create a `.env` file for local testing containing `GOOGLE_CLOUD_PROJECT` and `GEMINI_MODEL`. Make sure `.env` is listed in your `.gitignore` file. Create a `.env.example` file that shows the variable names without the real values.
+
+### Phase 2: Create a Bulletproof Dockerfile
+In the root of your project, create a file literally named `Dockerfile` (no extension) with this exact template, modifying only the `CMD` line to point to your specific script:
+
+```dockerfile
+FROM python:3.11-slim
+WORKDIR /app
+# CRITICAL: This line prevents "ModuleNotFoundError"
+ENV PYTHONPATH=/app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
+EXPOSE 8501
+# Replace "ui/your_app.py" with the actual path to your Streamlit or main file
+CMD ["streamlit", "run", "ui/your_app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+```
+
+### Phase 3: Setup Google Cloud Platform (GCP)
+1. Go to the [Google Cloud Console](https://console.cloud.google.com).
+2. Create a new Project and enable Billing.
+3. Search for "Vertex AI API", "Cloud Run API", and "Cloud Build API" in the top search bar and click **Enable** for each.
+4. Install the [Google Cloud SDK (gcloud)](https://cloud.google.com/sdk/docs/install) on your local computer.
+5. In your local terminal, run `gcloud auth login` and follow the browser prompts.
+6. In your local terminal, run `gcloud config set project YOUR_PROJECT_ID`.
+
+### Phase 4: Deploying to Cloud Run
+Open your terminal in the root of your project directory and run this exact command. 
+*Note: Change `my-new-agent` to whatever you want to name your app.*
+
+```bash
+gcloud run deploy my-new-agent \
+  --source . \
+  --port 8501 \
+  --allow-unauthenticated \
+  --min-instances=0 \
+  --max-instances=1 \
+  --region=us-central1
+```
+
+If your app requires live Vertex AI access, Cloud Run will automatically use the default Compute Engine Service Account of your project, which already has the necessary Vertex AI permissions. No API keys are required!
+
+### Phase 5: Verification
+Wait for the command to finish. It will output a URL that looks like `https://my-new-agent-xyz.a.run.app`. Click it, and your app is live!
