@@ -42,9 +42,9 @@ These deterministic rules unconditionally override any non-compliant model outpu
 
 ## Deployment Modes
 
-The application supports two distinct operational modes:
-* **Public Cloud Run Demo**: Runs with `MOCK_MODE=true`. It makes *no live Vertex AI calls* and *no Firestore writes*. Instead, it generates a deterministic mock plan and records approved decisions in a local mock audit. This ensures a safe public demonstration environment.
-* **Controlled Live Validation**: Runs with `MOCK_MODE=false`. In this mode, Vertex AI and Gemini are called successfully, securely evaluating the prompt and returning the schema-valid plan just before the safety validation and human approval boundary.
+The application supports two distinct operational modes across separate Cloud Run services:
+* **Public `safestaff-agentic` Service**: Runs with `MOCK_MODE=true` in SAFE MOCK MODE. It makes *no live Vertex AI calls* and *no Firestore writes*. Instead, it generates a deterministic mock plan and records approved decisions in a local mock audit. This ensures a safe, zero-cost public demonstration environment.
+* **Private `safestaff-agentic-live` Service (Controlled Live Validation)**: Runs with `MOCK_MODE=false`. This service connects to the real Vertex AI / Gemini 3.5 Flash path and is protected from unauthenticated public access. It securely evaluates the prompt, returning a schema-valid plan that passes deterministic safety validation before pausing for explicit human approval.
 
 ## Testing and Evidence
 
@@ -59,6 +59,10 @@ The system is backed by a robust test suite: **12 local tests passed** flawlessl
 
 ![Public Cloud Run demo: deterministic plan awaits explicit human review.](docs/screenshots/03-cloud-run-review.png.jpg)
 ![Public Cloud Run demo: approved plan completes and is recorded in the local mock audit.](docs/screenshots/04-cloud-run-approved.png.jpg)
+
+### Private Cloud Run Live Deployment Evidence
+
+![Authenticated private Cloud Run live path, accessed through gcloud run services proxy at http://127.0.0.1:8502. MOCK_MODE=false; a Gemini 3.5 Flash plan generated through Vertex AI, passed deterministic safety validation, and paused for explicit human approval before Firestore.](docs/screenshots/05-private-live-vertex-plan.png.jpg)
 
 ## Local Setup and Deployment
 

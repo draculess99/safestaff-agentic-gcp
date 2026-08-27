@@ -41,7 +41,7 @@ Standard required variables include:
 - `RUN_LIVE_TESTS`: Flag to enable specific integration tests (`true` or `false`).
 - `GEMINI_MODEL`: Specifies the Vertex AI model version.
 - `GOOGLE_CLOUD_PROJECT`: Target project ID.
-- `GOOGLE_CLOUD_LOCATION`: Region for the deployment and Vertex AI calls.
+- `GOOGLE_CLOUD_LOCATION`: Region for Vertex AI calls. Note: Cloud Run services deploy to `us-central1`, while Gemini 3.5 Flash is called via Vertex AI using `GOOGLE_CLOUD_LOCATION=us` (Vertex AI multi-region endpoint).
 - `GOOGLE_GENAI_USE_VERTEXAI`: Enable Google GenAI SDK Vertex usage.
 
 *Note: Use placeholders in `.env.example` to track structure.*
@@ -115,6 +115,8 @@ gcloud run deploy safestaff-agentic `
   --max-instances=1 `
   --region=us-central1
 ```
+
+For an authenticated private live deployment (`safestaff-agentic-live`), Cloud Run deploys to `us-central1` with `--no-allow-unauthenticated` and passes `--set-env-vars="MOCK_MODE=false,RUN_LIVE_TESTS=true,GOOGLE_CLOUD_LOCATION=us"` so Gemini 3.5 Flash connects to Vertex AI's `us` multi-region endpoint.
 
 ## Post-Deployment Checks
 After a successful deployment:
@@ -197,7 +199,7 @@ gcloud run deploy safestaff-agentic `
   --region=us-central1
 ```
 
-If your app requires live Vertex AI access, Cloud Run will automatically use the default Compute Engine Service Account of your project, which already has the necessary Vertex AI permissions. No API keys are required!
+If your app requires live Vertex AI access, Cloud Run will automatically use the default Compute Engine Service Account of your project, which already has the necessary Vertex AI permissions. For Gemini 3.5 Flash, Cloud Run remains hosted in `us-central1` while Vertex AI calls target `GOOGLE_CLOUD_LOCATION=us` (Vertex AI multi-region endpoint). No API keys are required!
 
 ### Phase 5: Verification
 Wait for the command to finish. It will output a URL that looks like `https://my-new-agent-xyz.a.run.app`. Click it, and your app is live!
