@@ -7,10 +7,10 @@ This runbook serves as a reusable, interview-ready guide for deploying human-gov
 
 ```mermaid
 flowchart LR
-    Dev[Local Developer] -->|gcloud run deploy| CR(Cloud Run)
-    CR -->|MOCK_MODE=true| Mock[Local Mock Audit]
-    CR -.->|MOCK_MODE=false| VAI(Vertex AI)
-    CR -.->|MOCK_MODE=false| FS[(Firestore)]
+    Dev["Local Developer"] -->|"gcloud run deploy"| CR("Cloud Run")
+    CR -->|"MOCK_MODE=true"| Mock["Local Mock Audit"]
+    CR -.->|"MOCK_MODE=false"| VAI("Vertex AI")
+    CR -.->|"MOCK_MODE=false"| FS[("Firestore")]
     
     style CR fill:#f9f,stroke:#333,stroke-width:2px
     style VAI fill:#d4edda,stroke:#333
@@ -50,16 +50,16 @@ Standard required variables include:
 
 ```mermaid
 flowchart TD
-    Start[Run Test/App] --> Mode{MOCK_MODE?}
-    Mode -- true --> Mock[Mock Mode]
-    Mock --> U[Local UI Testing]
-    Mock --> T1[pytest tests/]
-    Mock --> M[Deterministic Mock Output]
+    Start["Run Test/App"] --> Mode{"MOCK_MODE?"}
+    Mode -- "true" --> Mock["Mock Mode"]
+    Mock --> U["Local UI Testing"]
+    Mock --> T1["pytest tests/"]
+    Mock --> M["Deterministic Mock Output"]
     
-    Mode -- false --> Live[Controlled Live Mode]
-    Live --> V[Vertex AI API]
-    Live --> T2[pytest tests/test_live.py -s]
-    Live --> O[Real Gemini Output]
+    Mode -- "false" --> Live["Controlled Live Mode"]
+    Live --> V["Vertex AI API"]
+    Live --> T2["pytest tests/test_live.py -s"]
+    Live --> O["Real Gemini Output"]
 ```
 
 ### Mock-Mode Local Testing
@@ -86,11 +86,11 @@ python -m pytest -q .\tests\test_live.py -s
 
 ```mermaid
 flowchart LR
-    Container[Docker Container]
-    Container -->|1. Set PATH| WP[WORKDIR /app\nENV PYTHONPATH=/app]
-    Container -->|2. Entrypoint| CMD[CMD streamlit run ui/streamlit_app.py]
-    WP --> Python[Python finds app/agent.py]
-    CMD --> UI[UI Loads Successfully]
+    Container["Docker Container"]
+    Container -->|"1. Set PATH"| WP["WORKDIR /app<br/>ENV PYTHONPATH=/app"]
+    Container -->|"2. Entrypoint"| CMD["CMD streamlit run ui/streamlit_app.py"]
+    WP --> Python["Python finds app/agent.py"]
+    CMD --> UI["UI Loads Successfully"]
 ```
 
 When containerizing Streamlit with Google ADK, two critical configuration elements are required to prevent startup failures:
